@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "BBLoader.h"
 #include "Dlg.h"
-
+#include "MemoryTool.h"
 //----------------------------------------
 //#include "dll/BBLoader.h"
 //#pragma comment(lib,"dll/BBLoader.lib")
@@ -31,7 +31,9 @@ CApp theApp;
 //--------------------------------------------------------------------------------
 using namespace std;
 typedef map<DWORD, SOCKET> map_id;
+typedef map<DWORD, DWORD> map_inxd;
 map_id	g_id;
+map_inxd  g_inxd;
 HWND	g_hwndClient	= NULL;
 HWND	g_hwndSend		= NULL;
 HWND	g_hwndMain		= NULL;		//当有帐号来的时候想Dlg发送消息通知更新列表
@@ -190,6 +192,7 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)	/
 {
 	map_id::iterator i;
 	t_IDSOCKET id = {0};
+	int lid = 0;
 	BOOL bReconnect = FALSE;
 	switch(Msg)
 	{ 
@@ -200,8 +203,18 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)	/
 		{
 			g_id.erase(i);		//重新连接的，删除；顺便可以加上掉线重组功能
 			bReconnect = TRUE;	//掉线重组标志
+			map_inxd::iterator nit;
+			nit = g_inxd.find(id.id);
+			if (nit != g_inxd.end())
+				g_inxd.erase(nit);
 		}
 		g_id.insert(map_id::value_type(id.id,id.s ) );
+		 lid = getrole(id.id);
+		if (lid <= 0)
+		{
+			MessageBox(NULL, "错误", "获取角色失败", MB_OK);
+		}
+		g_inxd.insert(map_inxd::value_type(id.id,lid));
 		if(bReconnect && g_bReteam)
 		{
 			_beginthread(ReTeam,0, (void*)id.id);		//不能立即在g_id.erase(i);后面调用，因为新连的SOCKET还没关联进去
@@ -296,7 +309,7 @@ over:
 }
 void BBOpen()				//启动，不带多开功能了，多开留给lpk.dll
 {
-	TCHAR *lpProcessName = _T("wlvipcn.exe");
+	TCHAR *lpProcessName = _T("wlvipcn0.exe");
 	STARTUPINFO si = {sizeof(STARTUPINFO)};
 	PROCESS_INFORMATION pi;
 
@@ -347,4 +360,27 @@ BOOL CApp::InitInstance()
 		::ReleaseMutex(g_hMutex);
 
 	return FALSE;
+}
+
+//取角色
+int getrole(int ID)
+{
+	int i = 0;
+	while (true)
+	{
+		int hid = ReadMemoryInt({ 0X0077B5B4,0x1C,0x34 + (unsigned)i * 0x38,0x1B4,0x0,0x10 });
+		if (0 != hid)
+		{
+			if (hid == ID)
+			{
+				return i;
+			}
+
+		}
+		if (i >= 10)
+			return -1;
+		Sleep(1);
+		i++;
+		//ReadMemoryInt()
+	}
 }

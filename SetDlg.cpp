@@ -24,6 +24,7 @@ CSetDlg::CSetDlg(CWnd* pParent /*=NULL*/)
 	m_nSleep = 0;
 	m_nTimes = 0;
 	m_dwID = 0;
+	m_nType =0;
 	//}}AFX_DATA_INIT
 }
 
@@ -37,6 +38,7 @@ void CSetDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_SLEEP, m_nSleep);
 	DDX_Text(pDX, IDC_TIMES, m_nTimes);
 	DDX_Text(pDX, IDC_ID, m_dwID);
+	DDX_Text(pDX, IDC_LIST_Type, m_nType);
 	//}}AFX_DATA_MAP
 }
 

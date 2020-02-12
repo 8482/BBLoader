@@ -38,6 +38,7 @@
 #define IDC_TIME                        1004
 #define IDC_SLEEP                       1004
 #define IDC_DELAY                       1004
+#define IDC_EDIT_hp                     1004
 #define IDC_RADIO4                      1005
 #define IDC_R5                          1005
 #define IDC_P1_R1                       1005
@@ -74,7 +75,9 @@
 #define IDC_EVER                        1023
 #define IDC_RETEAM                      1023
 #define IDC_FILTER1                     1023
+#define IDC_CHECK_hp                    1023
 #define IDC_CHECK2                      1024
+#define IDC_CHECK_sp                    1024
 #define IDC_TOPWIN                      1025
 #define IDC_TABSHEET                    1026
 #define IDC_TEAM                        1028
@@ -96,8 +99,9 @@
 #define IDC_BUTTON_ADD                  1049
 #define IDC_BUTTON_SELALL               1050
 #define IDC_LIST_PROCESS                1052
-#define IDC_BUTTON_ADD2                 1055
 #define IDC_LIST_FILTER2                1056
+#define IDC_EDIT_sp                     1057
+#define IDC_LIST_Type                   1059
 #define ID_MENU_ABOUT                   32772
 #define ID_MENU_UPDATE                  32773
 #define ID_MENU_BBS                     32776
@@ -110,9 +114,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        144
+#define _APS_NEXT_RESOURCE_VALUE        146
 #define _APS_NEXT_COMMAND_VALUE         32783
-#define _APS_NEXT_CONTROL_VALUE         1057
+#define _APS_NEXT_CONTROL_VALUE         1060
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

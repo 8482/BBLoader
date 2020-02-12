@@ -50,6 +50,7 @@ extern void __ShowMessage(LPCTSTR lpInfo);
 extern void __ErrShow();
 extern BOOL IsSendWndAlive();
 extern SOCKET GetSocket(DWORD id);
+int getrole(int ID);
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}

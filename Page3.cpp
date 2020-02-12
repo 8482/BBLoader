@@ -12,6 +12,7 @@
 #include <vector>
 #include "SetDlg.h"
 #include "Dlg.h"
+#include "MemoryTool.h"
 using namespace std;
 
 #ifdef _DEBUG
@@ -53,6 +54,7 @@ ON_BN_CLICKED(IDC_OPEN, OnOpen)
 	ON_BN_CLICKED(IDC_MODIFY, OnModify)
 	ON_BN_CLICKED(IDC_DEL, OnDel)
 	ON_NOTIFY(NM_CLICK, IDC_LIST_PACKET, OnClickListPacket)
+	//ON_NOTIFY(NM_CLICK, IDC_LIST_Type, OnClickListPacket)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -93,7 +95,8 @@ public:
 	DWORD	nTimes;
 	BOOL	bEver;
 	BOOL	bStop;
-
+	//0，其他1.刷怪包2.血蓝辅助
+	int		nType;
 };
 void CSend::Start()
 {
@@ -119,6 +122,7 @@ void __cdecl  CSend::ThreadSend(void* pcsend)
 
 	char	*lpBuf;
 	int		len = g_packet[i].len;
+	
 	len		+= 8;
 	lpBuf	= new char[len];
 	len		-= 8;
@@ -134,6 +138,15 @@ void __cdecl  CSend::ThreadSend(void* pcsend)
 	while((!pcs->bStop) && (pcs->bEver || pcs->nTimes))
 	{
 		SOCKET s = GetSocket(pcs->id);	//掉线重连继续发包
+		DWORD inxd = getrole(pcs->id);//第几个角色
+
+		if (1 == pcs->nType)
+		{
+			while (true)
+			{
+				// ReadMemoryInt();
+			}
+		}
 		memcpy(lpBuf, &s, 4);
 		::SendMessage(g_hwndSend,WM_COPYDATA,(WPARAM)g_hwndSend,(LPARAM)&cds);		
 		Sleep(pcs->nSleep);
@@ -303,6 +316,7 @@ void CPage3::OnAdd()
 	dlg.m_nSleep		= 1000;
 	dlg.m_nTimes		= 1;
 	dlg.m_bEver			= FALSE;	
+	dlg.m_nType			= 0;
 	if(	IDCANCEL == dlg.DoModal())
 		return;
 

@@ -144,7 +144,7 @@ HCURSOR CDlg::OnQueryDragIcon()
 #include <shellapi.h>
 using namespace std;
 extern map<DWORD, SOCKET> g_id;
-
+extern map<DWORD, DWORD> g_inxd;;
 LRESULT CDlg::UpdateIDList(WPARAM wParam, LPARAM lParam)	//ожтзж╩йг©╢спц╩спакё╛ц╩сп╬м╪сиоё╛╤Ь╡╩йггЕ©утылМ╪сак
 {
 	map<DWORD, SOCKET>::iterator i = g_id.begin();
@@ -159,6 +159,12 @@ LRESULT CDlg::UpdateIDList(WPARAM wParam, LPARAM lParam)	//ожтзж╩йг©╢спц╩спакё╛ц
 			pCB->AddString(text);
 		if(CB_ERR == pcbTeam->FindString(-1, text))
 			pcbTeam->AddString(text);
+		map<DWORD, DWORD>::iterator Li;
+		Li = g_inxd.find((*i).first);
+		if (Li == g_inxd.end())
+		{
+			g_inxd.insert(map<DWORD, DWORD>::value_type((*i).first,getrole((*i).first)));
+		}
 	}
 
 	if(0 == GetDlgItemInt(IDC_IDLIST))	//я║тЯобр╩╦Ж

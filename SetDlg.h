@@ -24,6 +24,7 @@ public:
 	DWORD	m_nSleep;
 	DWORD	m_nTimes;
 	DWORD	m_dwID;
+	DWORD	m_nType;
 	//}}AFX_DATA
 
 
